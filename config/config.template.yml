@@ -1,0 +1,21 @@
+uac:
+  type: 'static'
+  users:
+    - user_id: 'abcdef'
+      permissions:
+        - manage
+
+auth:
+  type: 'jwt-jwk'
+  jwkUrl: ''
+
+database:
+  type: cockroachdb
+  host: localhost
+  username: postgres
+  password: 'postgres'
+  database: dev_email-sync-server
+  ssl:
+    rejectUnauthorized: false
+    ca:
+      path: ./config/certs/ca.crt
