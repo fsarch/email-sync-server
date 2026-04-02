@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Account } from '../database/entities/account.entity';
+import { Account } from '../database/entities/account.entity.js';
 
 export class AccountMetaDto {
   @ApiProperty()

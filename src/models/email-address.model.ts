@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EmailAddress } from '../database/entities/email-address.entity';
+import { EmailAddress } from '../database/entities/email-address.entity.js';
 
 export class EmailAddressDto {
   public static FromDbo(emailAddress: EmailAddress): EmailAddressDto {

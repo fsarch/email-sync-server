@@ -1,14 +1,13 @@
 import { readFileSync } from 'fs';
 import * as yaml from 'js-yaml';
 import { resolve } from 'node:path';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { ConfigType } from './config.type.js';
 
 const YAML_CONFIG_FILENAME = 'config.yaml';
 
-const CONFIG_VALIDATION_SCHEMA = Joi
-  .any
-  // {
+const CONFIG_VALIDATION_SCHEMA = Joi.any(
+  //{
   // auth: Joi.alternatives(
   //   Joi.object({
   //     type: Joi.string().valid('static').required(),
@@ -71,7 +70,7 @@ const CONFIG_VALIDATION_SCHEMA = Joi
   //   }),
   // ),
   // }
-  ();
+);
 
 export default () => {
   const config = yaml.load(

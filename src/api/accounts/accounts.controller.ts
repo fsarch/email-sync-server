@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AccountCreateDto, AccountDto } from '../../models/account.model';
+import { AccountCreateDto, AccountDto } from '../../models/account.model.js';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Roles } from '../../fsarch/uac/decorators/roles.decorator';
-import { Role } from '../../fsarch/auth/role.enum';
-import { AccountsRepositoryService } from '../../repositories/accounts-repository/accounts-repository.service';
+import { Roles } from '../../fsarch/uac/decorators/roles.decorator.js';
+import { Role } from '../../fsarch/auth/role.enum.js';
+import { AccountsRepositoryService } from '../../repositories/accounts-repository/accounts-repository.service.js';
 
 @ApiTags('accounts')
 @Controller({

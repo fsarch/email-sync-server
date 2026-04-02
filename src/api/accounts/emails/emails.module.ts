@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { EmailsService } from './emails.service';
-import { EmailsController } from './emails.controller';
+import { EmailsService } from './emails.service.js';
+import { EmailsController } from './emails.controller.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Email } from '../../../database/entities/email.entity';
-import { EmailAddressesModule } from '../../email-addresses/email-addresses.module';
-import { EmailReceiver } from '../../../database/entities/email-receiver.entity';
-import { AccountsRepositoryModule } from '../../../repositories/accounts-repository/accounts-repository.module';
+import { Email } from '../../../database/entities/email.entity.js';
+import { EmailAddressesModule } from '../../email-addresses/email-addresses.module.js';
+import { EmailReceiver } from '../../../database/entities/email-receiver.entity.js';
+import { AccountsRepositoryModule } from '../../../repositories/accounts-repository/accounts-repository.module.js';
 
 @Module({
   providers: [EmailsService],

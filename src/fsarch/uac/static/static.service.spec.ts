@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StaticUacService } from './static.service';
+import { StaticUacService } from './static.service.js';
 
 describe('StaticUacService', () => {
   let service: StaticUacService;

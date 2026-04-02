@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import Joi from 'joi';
 
 export const STATIC_AUTH_CONFIG_VALIDATOR = Joi.object({
   type: Joi.string().valid('static').required(),

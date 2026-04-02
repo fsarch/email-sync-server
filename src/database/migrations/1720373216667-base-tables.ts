@@ -323,7 +323,7 @@ export class BaseTables1720373216667 implements MigrationInterface {
             name: 'id',
             type: 'uuid',
             isPrimary: true,
-            primaryKeyConstraintName: 'pk__thread',
+            primaryKeyConstraintName: 'pk__email_receiver',
           },
           {
             name: 'email_id',
