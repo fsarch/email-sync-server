@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StaticUacService } from './static.service';
+import { PinoLogger } from './pino-logger.service.js';
 
-describe('StaticUacService', () => {
-  let service: StaticUacService;
+describe('LoggerService', () => {
+  let service: PinoLogger;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [StaticUacService],
+      providers: [PinoLogger],
     }).compile();
 
-    service = module.get<StaticUacService>(StaticUacService);
+    service = module.get<PinoLogger>(PinoLogger);
   });
 
   it('should be defined', () => {

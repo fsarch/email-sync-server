@@ -79,6 +79,7 @@ export class AccountOptionsDto {
 
     accountOptions.inbox = AccountInboxOptionsDto.FromDbo(data.inbox);
     accountOptions.outbox = AccountOutboxOptionsDto.FromDbo(data.outbox);
+    accountOptions.eMailAddress = data.eMailAddress;
 
     return accountOptions;
   }

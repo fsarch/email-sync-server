@@ -21,6 +21,23 @@ export class EmailsService {
     private readonly accountService: AccountsRepositoryService,
   ) {}
 
+  public async List(accountId: string): Promise<Array<Email>> {
+    return this.emailRepository.find({
+      where: {
+        accountId,
+      },
+    });
+  }
+
+  public async GetById(accountId: string, emailId: string): Promise<Email> {
+    return this.emailRepository.findOne({
+      where: {
+        id: emailId,
+        accountId,
+      },
+    });
+  }
+
   public async Create(
     accountId: string,
     emailCreateDto: EmailCreateDto,

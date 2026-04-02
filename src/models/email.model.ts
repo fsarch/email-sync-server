@@ -1,5 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Optional } from "@nestjs/common";
+import { Optional } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
+import { Email } from '../database/entities/email.entity.js';
 
 export class EmailCreateContentDto {
   @Optional()
@@ -37,3 +38,75 @@ export class EmailCreateDto {
   @ApiProperty()
   content: EmailCreateContentDto;
 }
+
+export class EmailContentDto {
+  @ApiProperty()
+  html?: string;
+
+  @ApiProperty()
+  text?: string;
+}
+
+export class EmailListDto {
+  public static FromDbo(email: Email) {
+    const dto = new EmailListDto();
+
+    dto.id = email.id;
+    dto.accountId = email.accountId;
+    dto.senderEmailAddressId = email.senderEmailAddressId;
+    dto.replyEmailAddressId = email.replyEmailAddressId;
+    dto.subject = email.subject;
+    dto.creationTime = email.creationTime;
+    dto.readTime = email.readTime;
+    dto.sendTime = email.sendTime;
+    dto.deletionTime = email.deletionTime;
+
+    return dto;
+  }
+
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  accountId: string;
+
+  @ApiProperty()
+  senderEmailAddressId: string;
+
+  @ApiProperty()
+  replyEmailAddressId: string;
+
+  @ApiProperty()
+  subject: string;
+
+  @ApiProperty()
+  creationTime: string;
+
+  @ApiProperty()
+  readTime: string;
+
+  @ApiProperty()
+  sendTime: string;
+
+  @ApiProperty()
+  deletionTime: string;
+}
+
+export class EmailSingleDto extends EmailListDto {
+  public static FromDbo(email: Email) {
+    const dto = new EmailSingleDto();
+    const baseDto = EmailListDto.FromDbo(email);
+
+    Object.assign(dto, baseDto);
+    dto.content = {
+      html: email.htmlContent,
+      text: email.textContent,
+    };
+
+    return dto;
+  }
+
+  @ApiProperty()
+  content: EmailContentDto;
+}
+
