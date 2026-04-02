@@ -1,14 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Account } from '../database/entities/account.entity.js';
 
+export enum AccountAuthType {
+  basic = 'basic',
+}
+
+export enum AccountInboxType {
+  imap = 'imap',
+}
+
+export enum AccountOutboxType {
+  smtp = 'smtp',
+}
+
 export class AccountMetaDto {
   @ApiProperty()
   color?: string;
 }
 
 export class AccountAuthBasicOptionsDto {
-  @ApiProperty()
-  type: 'basic';
+  @ApiProperty({
+    enum: AccountAuthType,
+    enumName: 'AccountAuthType',
+  })
+  type: AccountAuthType;
 
   @ApiProperty()
   username: string;
@@ -29,8 +44,11 @@ export class AccountInboxOptionsDto {
     return inboxOptions;
   }
 
-  @ApiProperty()
-  type: 'imap';
+  @ApiProperty({
+    enum: AccountInboxType,
+    enumName: 'AccountInboxType',
+  })
+  type: AccountInboxType;
 
   @ApiProperty()
   auth: AccountAuthBasicOptionsDto;
@@ -57,8 +75,11 @@ export class AccountOutboxOptionsDto {
     return inboxOptions;
   }
 
-  @ApiProperty()
-  type: 'smtp';
+  @ApiProperty({
+    enum: AccountOutboxType,
+    enumName: 'AccountOutboxType',
+  })
+  type: AccountOutboxType;
 
   @ApiProperty()
   auth: AccountAuthBasicOptionsDto;
