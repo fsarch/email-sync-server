@@ -9,7 +9,7 @@ describe('LoggerService', () => {
       providers: [PinoLogger],
     }).compile();
 
-    service = module.get<PinoLogger>(PinoLogger);
+    service = await module.resolve<PinoLogger>(PinoLogger);
   });
 
   it('should be defined', () => {
