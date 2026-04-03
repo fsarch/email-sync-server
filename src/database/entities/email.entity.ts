@@ -15,6 +15,15 @@ export class Email {
   accountId: string;
 
   @Column({
+    name: 'imap_message_id',
+    type: 'varchar',
+    length: 512,
+    nullable: true,
+    unique: true,
+  })
+  imapMessageId: string;
+
+  @Column({
     name: 'sender_email_address_id',
     type: 'uuid',
     nullable: false,

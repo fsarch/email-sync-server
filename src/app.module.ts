@@ -11,6 +11,7 @@ import { Tag } from './database/entities/tag.entity.js';
 import { ApiModule } from './api/api.module.js';
 import { AccountsRepositoryModule } from './repositories/accounts-repository/accounts-repository.module.js';
 import { EmailReceiver } from './database/entities/email-receiver.entity.js';
+import { AddImapMessageIdToEmail1775173532152 } from './database/migrations/1775173532152-add-imap-message-id.js';
 
 @Module({
   imports: [
@@ -18,7 +19,10 @@ import { EmailReceiver } from './database/entities/email-receiver.entity.js';
       auth: {},
       database: {
         entities: [Account, Email, EmailAddress, EmailReceiver, EmailTag, Tag],
-        migrations: [BaseTables1720373216667],
+        migrations: [
+          BaseTables1720373216667,
+          AddImapMessageIdToEmail1775173532152,
+        ],
       },
     }),
     ApiModule,
