@@ -80,9 +80,9 @@ export class AccountsController {
         message: `Emails für Account ${accountId} erfolgreich synchronisiert`,
         accountId,
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new BadRequestException(
-        `Fehler bei der Synchronisierung: ${error.message}`,
+        `Fehler bei der Synchronisierung: ${(error && 'message' in error) ? error.message : 'no message'}`,
       );
     }
   }
