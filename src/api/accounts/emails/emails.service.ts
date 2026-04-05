@@ -10,6 +10,28 @@ import { AccountOptionsDto } from '../../../models/account.model.js';
 import { AccountsRepositoryService } from '../../../repositories/accounts-repository/accounts-repository.service.js';
 import * as nodemailer from 'nodemailer';
 
+export type EmailListOptions = {
+  page: number;
+  limit: number;
+  search?: string;
+  sort?: EmailSortOption;
+};
+
+export type EmailSortDirection = 'ASC' | 'DESC';
+export type EmailSortField = 'subject' | 'creationTime' | 'sendTime';
+
+export type EmailSortOption = {
+  direction: EmailSortDirection;
+  field: EmailSortField;
+};
+
+export type EmailListResult = {
+  items: Array<Email>;
+  total: number;
+  page: number;
+  limit: number;
+};
+
 @Injectable()
 export class EmailsService {
   constructor(
@@ -21,12 +43,57 @@ export class EmailsService {
     private readonly accountService: AccountsRepositoryService,
   ) {}
 
-  public async List(accountId: string): Promise<Array<Email>> {
-    return this.emailRepository.find({
-      where: {
+  public async List(
+    accountId: string,
+    options: EmailListOptions,
+  ): Promise<EmailListResult> {
+    const sortFieldMap: Record<EmailSortField, string> = {
+      subject: 'email.subject',
+      creationTime: 'email.creationTime',
+      sendTime: 'email.sendTime',
+    };
+
+    const sortField = options.sort?.field ?? 'creationTime';
+    const sortDirection = options.sort?.direction ?? 'DESC';
+
+    const query = this.emailRepository
+      .createQueryBuilder('email')
+      .where('email.accountId = :accountId', {
         accountId,
-      },
-    });
+      });
+
+    if (options.search?.trim()) {
+      query.andWhere(
+        `(
+          email.subject ILIKE :search
+          OR email.textContent ILIKE :search
+          OR email.htmlContent ILIKE :search
+        )`,
+        {
+          search: `%${options.search.trim()}%`,
+        },
+      );
+    }
+
+    query.orderBy(sortFieldMap[sortField], sortDirection);
+
+    if (sortField !== 'creationTime') {
+      query.addOrderBy('email.creationTime', 'DESC');
+    }
+
+    query
+      .addOrderBy('email.id', 'DESC')
+      .skip((options.page - 1) * options.limit)
+      .take(options.limit);
+
+    const [items, total] = await query.getManyAndCount();
+
+    return {
+      items,
+      total,
+      page: options.page,
+      limit: options.limit,
+    };
   }
 
   public async GetById(accountId: string, emailId: string): Promise<Email> {
@@ -83,9 +150,7 @@ export class EmailsService {
           emailAddressId: emailAddress.id,
         });
 
-        const savedReceiver = await this.emailReceiverRepository.save(createdReceiver);
-
-        return savedReceiver;
+        return await this.emailReceiverRepository.save(createdReceiver);
       },
     );
 

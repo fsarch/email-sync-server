@@ -10,6 +10,7 @@
     "moduleResolution": "NodeNext",
     "sourceMap": true,
     "outDir": "./dist",
+    "rootDir": "./src",
     "types": ["node", "vitest/globals"],
     "incremental": true,
     "skipLibCheck": true,

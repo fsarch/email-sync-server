@@ -1,23 +1,33 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
+  BadRequestException,
   Get,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { EmailsService } from './emails.service.js';
 import { Roles } from '../../../fsarch/uac/decorators/roles.decorator.js';
 import { Role } from '../../../fsarch/auth/role.enum.js';
 import {
+  EmailSortOption,
+  EmailSortDirection,
+  EmailSortField,
+} from './emails.service.js';
+import {
   EmailCreateDto,
-  EmailListDto,
+  EmailListResponseDto,
   EmailSingleDto,
 } from '../../../models/email.model.js';
 
@@ -33,13 +43,90 @@ export class EmailsController {
   @Get()
   @Roles(Role.manage)
   @ApiOkResponse({
-    type: EmailListDto,
-    isArray: true,
+    type: EmailListResponseDto,
   })
-  public async List(@Param('accountId') accountId: string) {
-    const emails = await this.emailsService.List(accountId);
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    example: 25,
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: String,
+    example: 'invoice',
+  })
+  @ApiQuery({
+    name: 'sort',
+    required: false,
+    type: String,
+    example: 'desc:creationTime',
+    description: 'Format: asc:subject, desc:creationTime oder asc:sendTime',
+  })
+  public async List(
+    @Param('accountId') accountId: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(25), ParseIntPipe) limit: number,
+    @Query('search') search?: string,
+    @Query('sort') sort?: string,
+  ) {
+    if (page < 1) {
+      throw new BadRequestException('page must be >= 1');
+    }
 
-    return emails.map(EmailListDto.FromDbo);
+    if (limit < 1 || limit > 100) {
+      throw new BadRequestException('limit must be between 1 and 100');
+    }
+
+    const result = await this.emailsService.List(accountId, {
+      page,
+      limit,
+      search,
+      sort: this.ParseSort(sort),
+    });
+
+    return EmailListResponseDto.FromDbo(
+      result.items,
+      result.total,
+      result.page,
+      result.limit,
+    );
+  }
+
+  private ParseSort(sort?: string): EmailSortOption | undefined {
+    if (!sort?.trim()) {
+      return undefined;
+    }
+
+    const match = /^(asc|desc):(subject|creationTime|sendTime)$/i.exec(sort.trim());
+
+    if (!match) {
+      throw new BadRequestException(
+        'sort must match "asc:subject", "desc:creationTime" or "asc:sendTime"',
+      );
+    }
+
+    const direction = match[1].toUpperCase() as EmailSortDirection;
+    const fieldStr = match[2].toLowerCase();
+    let field: EmailSortField = 'creationTime';
+
+    if (fieldStr === 'subject') {
+      field = 'subject';
+    } else if (fieldStr === 'sendtime') {
+      field = 'sendTime';
+    }
+
+    return {
+      direction,
+      field,
+    };
   }
 
   @Get(':emailId')

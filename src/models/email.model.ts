@@ -92,6 +92,48 @@ export class EmailListDto {
   deletionTime: string;
 }
 
+export class EmailListMetaDto {
+  @ApiProperty()
+  total: number;
+
+  @ApiProperty()
+  page: number;
+
+  @ApiProperty()
+  limit: number;
+}
+
+export class EmailListResponseDto {
+  public static FromDbo(
+    emails: Array<Email>,
+    total: number,
+    page: number,
+    limit: number,
+  ) {
+    const dto = new EmailListResponseDto();
+
+    dto.items = emails.map(EmailListDto.FromDbo);
+    dto.meta = {
+      total,
+      page,
+      limit,
+    };
+
+    return dto;
+  }
+
+  @ApiProperty({
+    type: EmailListDto,
+    isArray: true,
+  })
+  items: Array<EmailListDto>;
+
+  @ApiProperty({
+    type: EmailListMetaDto,
+  })
+  meta: EmailListMetaDto;
+}
+
 export class EmailSingleDto extends EmailListDto {
   public static FromDbo(email: Email) {
     const dto = new EmailSingleDto();
