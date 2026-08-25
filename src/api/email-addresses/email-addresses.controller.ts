@@ -1,7 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Roles } from '../../fsarch/uac/decorators/roles.decorator.js';
-import { Role } from '../../fsarch/auth/role.enum.js';
+import { Roles } from '@fsarch/server/uac';
+import { Role } from '../../constants/role.enum.js';
 import { EmailAddressesService } from './email-addresses.service.js';
 import { EmailAddressDto } from '../../models/email-address.model.js';
 

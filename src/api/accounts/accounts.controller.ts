@@ -6,8 +6,8 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Roles } from '../../fsarch/uac/decorators/roles.decorator.js';
-import { Role } from '../../fsarch/auth/role.enum.js';
+import { Roles } from '@fsarch/server/uac';
+import { Role } from '../../constants/role.enum.js';
 import { AccountsRepositoryService } from '../../repositories/accounts-repository/accounts-repository.service.js';
 import { ImapSyncService } from './imap-sync/imap-sync.service.js';
 

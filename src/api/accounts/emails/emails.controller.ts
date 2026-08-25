@@ -18,8 +18,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { EmailsService } from './emails.service.js';
-import { Roles } from '../../../fsarch/uac/decorators/roles.decorator.js';
-import { Role } from '../../../fsarch/auth/role.enum.js';
+import { Roles } from '@fsarch/server/uac';
+import { Role } from '../../../constants/role.enum.js';
 import {
   EmailSortOption,
   EmailSortDirection,
