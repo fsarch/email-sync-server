@@ -1,8 +1,9 @@
+import { Roles } from '@fsarch/server/uac';
 import {
+  BadRequestException,
   Body,
   Controller,
   DefaultValuePipe,
-  BadRequestException,
   Get,
   NotFoundException,
   Param,
@@ -17,19 +18,18 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { EmailsService } from './emails.service.js';
-import { Roles } from '@fsarch/server/uac';
 import { Role } from '../../../constants/role.enum.js';
-import {
-  EmailSortOption,
-  EmailSortDirection,
-  EmailSortField,
-} from './emails.service.js';
 import {
   EmailCreateDto,
   EmailListResponseDto,
   EmailSingleDto,
 } from '../../../models/email.model.js';
+import {
+  EmailSortDirection,
+  EmailSortField,
+  EmailSortOption,
+  EmailsService,
+} from './emails.service.js';
 
 @ApiTags('emails')
 @Controller({
@@ -105,7 +105,9 @@ export class EmailsController {
       return undefined;
     }
 
-    const match = /^(asc|desc):(subject|creationTime|sendTime)$/i.exec(sort.trim());
+    const match = /^(asc|desc):(subject|creationTime|sendTime)$/i.exec(
+      sort.trim(),
+    );
 
     if (!match) {
       throw new BadRequestException(

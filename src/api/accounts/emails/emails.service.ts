@@ -1,14 +1,14 @@
+import * as crypto from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Email } from '../../../database/entities/email.entity.js';
-import { Repository } from 'typeorm';
-import { EmailCreateDto } from '../../../models/email.model.js';
-import * as crypto from 'node:crypto';
-import { EmailReceiver } from '../../../database/entities/email-receiver.entity.js';
-import { EmailAddressesService } from '../../email-addresses/email-addresses.service.js';
-import { AccountOptionsDto } from '../../../models/account.model.js';
-import { AccountsRepositoryService } from '../../../repositories/accounts-repository/accounts-repository.service.js';
 import * as nodemailer from 'nodemailer';
+import { Repository } from 'typeorm';
+import { Email } from '../../../database/entities/email.entity.js';
+import { EmailReceiver } from '../../../database/entities/email-receiver.entity.js';
+import { AccountOptionsDto } from '../../../models/account.model.js';
+import { EmailCreateDto } from '../../../models/email.model.js';
+import { AccountsRepositoryService } from '../../../repositories/accounts-repository/accounts-repository.service.js';
+import { EmailAddressesService } from '../../email-addresses/email-addresses.service.js';
 
 export type EmailListOptions = {
   page: number;

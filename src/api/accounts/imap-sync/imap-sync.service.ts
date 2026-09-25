@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { ImapFlow } from 'imapflow';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Email } from '../../../database/entities/email.entity.js';
-import { Repository } from 'typeorm';
-import { AccountsRepositoryService } from '../../../repositories/accounts-repository/accounts-repository.service.js';
-import { AccountOptionsDto } from '../../../models/account.model.js';
-import { EmailAddressesService } from '../../email-addresses/email-addresses.service.js';
 import * as crypto from 'node:crypto';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ImapFlow } from 'imapflow';
 import { simpleParser } from 'mailparser';
+import { Repository } from 'typeorm';
+import { Email } from '../../../database/entities/email.entity.js';
+import { AccountOptionsDto } from '../../../models/account.model.js';
+import { AccountsRepositoryService } from '../../../repositories/accounts-repository/accounts-repository.service.js';
+import { EmailAddressesService } from '../../email-addresses/email-addresses.service.js';
 
 @Injectable()
 export class ImapSyncService {
@@ -44,13 +44,17 @@ export class ImapSyncService {
       const mailbox = await client.mailboxOpen('INBOX');
 
       // Get all message UIDs in the mailbox
-      for await (const message of client.fetch('1:*', { envelope: true, source: true })) {
+      for await (const message of client.fetch('1:*', {
+        envelope: true,
+        source: true,
+      })) {
         try {
           // Parse the email
           const parsed = await simpleParser(message.source);
 
           // Generate unique message ID (preferring the email's Message-ID header)
-          const messageId = parsed.messageId || `${message.uid}@${options.inbox.host}`;
+          const messageId =
+            parsed.messageId || `${message.uid}@${options.inbox.host}`;
 
           // Check if email already exists (by IMAP message ID)
           const existingEmail = await this.emailRepository.findOne({
@@ -101,4 +105,3 @@ export class ImapSyncService {
     }
   }
 }
-

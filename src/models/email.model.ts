@@ -151,4 +151,3 @@ export class EmailSingleDto extends EmailListDto {
   @ApiProperty()
   content: EmailContentDto;
 }
-

@@ -1,13 +1,21 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, BadRequestException } from '@nestjs/common';
-import { AccountCreateDto, AccountDto } from '../../models/account.model.js';
+import { Roles } from '@fsarch/server/uac';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Roles } from '@fsarch/server/uac';
 import { Role } from '../../constants/role.enum.js';
+import { AccountCreateDto, AccountDto } from '../../models/account.model.js';
 import { AccountsRepositoryService } from '../../repositories/accounts-repository/accounts-repository.service.js';
 import { ImapSyncService } from './imap-sync/imap-sync.service.js';
 
@@ -82,7 +90,7 @@ export class AccountsController {
       };
     } catch (error: any) {
       throw new BadRequestException(
-        `Fehler bei der Synchronisierung: ${(error && 'message' in error) ? error.message : 'no message'}`,
+        `Fehler bei der Synchronisierung: ${error && 'message' in error ? error.message : 'no message'}`,
       );
     }
   }

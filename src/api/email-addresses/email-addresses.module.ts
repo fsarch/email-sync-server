@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { EmailAddressesService } from './email-addresses.service.js';
-import { EmailAddressesController } from './email-addresses.controller.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailAddress } from '../../database/entities/email-address.entity.js';
+import { EmailAddressesController } from './email-addresses.controller.js';
+import { EmailAddressesService } from './email-addresses.service.js';
 
 @Module({
   providers: [EmailAddressesService],

@@ -101,7 +101,9 @@ describe('EmailsController', () => {
   });
 
   it('should reject invalid sort format', async () => {
-    await expect(controller.List('account-1', 1, 25, undefined, 'subject:asc')).rejects.toThrow(
+    await expect(
+      controller.List('account-1', 1, 25, undefined, 'subject:asc'),
+    ).rejects.toThrow(
       'sort must match "asc:subject", "desc:creationTime" or "asc:sendTime"',
     );
   });

@@ -86,4 +86,3 @@ describe('public response mappings', () => {
     expect(dto.content.text).toBe('Hello');
   });
 });
-

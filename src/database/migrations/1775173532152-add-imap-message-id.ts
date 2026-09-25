@@ -1,6 +1,13 @@
-import { MigrationInterface, QueryRunner, TableColumn, TableIndex } from "typeorm";
+import {
+  MigrationInterface,
+  QueryRunner,
+  TableColumn,
+  TableIndex,
+} from 'typeorm';
 
-export class AddImapMessageIdToEmail1775173532152 implements MigrationInterface {
+export class AddImapMessageIdToEmail1775173532152
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
       'email',
@@ -27,4 +34,3 @@ export class AddImapMessageIdToEmail1775173532152 implements MigrationInterface 
     await queryRunner.dropColumn('email', 'imap_message_id');
   }
 }
-

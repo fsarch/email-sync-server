@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmailAddress } from '../../database/entities/email-address.entity.js';
 import { Repository } from 'typeorm';
+import { EmailAddress } from '../../database/entities/email-address.entity.js';
 import { EmailAddressCreateDto } from '../../models/email-address.model.js';
 
 @Injectable()
